@@ -1,0 +1,27 @@
+{
+  "name": "Python & Jupyter Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // --- CHANGE #1 ---
+  // Connect as the root user to bypass all permission issues
+  "remoteUser": "root",
+
+  // --- CHANGE #2 ---
+  // Run the command as root (sudo is no longer needed)
+  "postCreateCommand": "chown -R jovyan:users /home/jovyan/work",
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/jovyan/work,type=bind",
+  "workspaceFolder": "/home/jovyan/work",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+  "forwardPorts": [8888]
+}
