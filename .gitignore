@@ -17,3 +17,5 @@ COAL/COAL/COAL/*
 
 # Finally, make an exception for the .asm files within that specific directory
 !COAL/COAL/COAL/*.asm
+
+*.exe
