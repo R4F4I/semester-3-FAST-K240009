@@ -36,7 +36,10 @@ void reverse_LL(struct node *head){
         
         // switch the node at which next is point to be prev
         
-        curr->next = prev;
+        // wait for the prev node to enter into the LL
+        if (prev !=NULL){
+            curr->next = prev;
+        }
         printf("\n%d",i++,next->data);
         // printf("\n%d");
 
