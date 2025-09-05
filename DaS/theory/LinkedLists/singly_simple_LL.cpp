@@ -7,23 +7,26 @@ the new node will have its next pointer pointing to null
 
 #include <stdio.h>
 
-class node
+class singlyNode
 {
 public:
     int data;
-    node *next;
+    singlyNode *next;
 
     // constructor
-    node (int data){
+    singlyNode(int data){
         this->data = data;
         next = NULL;
     }
+    singlyNode(){
+        this->data = 0;
+        next = NULL;
+    }
 };
-
 class singly_LL
 {
 private:
-    node* head;
+    singlyNode* head;
 public:
     singly_LL(){
         head = NULL;
@@ -32,7 +35,7 @@ public:
     // insert a data at the end of the node
     void insert_end(int data){
         // allocate memory (using new) of size node, return type pointer of node, why? to prevent the local var from being destroyed when the function ends (DMA prevents the var from being destroyed automatically) 
-        node *new_node = new node(data);
+        singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
         if (head == NULL) // the value of head ptr
@@ -43,7 +46,7 @@ public:
 
         // traverse to the end of ll
         
-        node *temp = head; // copy head pointer's value into temp
+        singlyNode *temp = head; // copy head pointer's value into temp
         while (temp->next!=NULL)
         {
             // temp->next is sam (*temp).next, meaning temp is being dereferenced and the next value of that node is being store in the temp pointer
@@ -58,12 +61,12 @@ public:
         {
             return;
         }
-
-        node *prev=NULL, *curr=NULL, *next=this->head;
+        // need 3 pointers
+        singlyNode *prev=NULL, *curr=NULL, *next=this->head;
 
         while (next!=NULL)
         {
-            // progress forward
+            // progress forward or 'crawl' through the LL
             prev = curr;
             curr = next;
             next = next->next;
@@ -78,7 +81,7 @@ public:
 
 
     void print(){
-        node *temp = head; // a temporary pointer to traverse through the LL
+        singlyNode *temp = head; // a temporary pointer to traverse through the LL
         while (temp!=NULL)
         {
             printf("%d -> ", temp->data);
@@ -87,6 +90,25 @@ public:
         printf("\n");
         
     }
+};
+
+
+class doublyNode : public singlyNode
+{
+public:
+    doublyNode *prev;
+
+    // constructor
+    doublyNode(int data){
+        singlyNode(data);
+        prev = NULL;
+    }
+};
+
+
+class doubly_LL : public singly_LL
+{
+    singlyNode *head; // despite being part of a doubly LL the head can only point to a single 
 };
 
 
