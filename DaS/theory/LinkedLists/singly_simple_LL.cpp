@@ -32,15 +32,34 @@ public:
         head = NULL;
     }
 
-    // insert a data at the end of the node
-    void insert_end(int data){
-        // allocate memory (using new) of size node, return type pointer of node, why? to prevent the local var from being destroyed when the function ends (DMA prevents the var from being destroyed automatically) 
+    void insert_start(int data){
+        
         singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
         if (head == NULL) // the value of head ptr
         {
             head = new_node;
+            return;
+        } else {
+            new_node->next = head; // copy the value of head / new_node is pointing where is head is pointing
+            head = new_node; // head now points to the new node
+            return;
+        }
+
+
+    }
+
+    // insert a data at the end of the node
+    void insert_end(int data){
+        // allocate memory (using new) of size node, return type pointer of node, why? to prevent the local var from being destroyed when the function ends (DMA prevents the var from being destroyed automatically) 
+        // also new_node is pointer to this DMA created node, it contains the node's address not its value
+        singlyNode *new_node = new singlyNode(data);
+        
+        // empty LL checker
+        if (head == NULL) // the value of head ptr
+        {
+            head = new_node; // copy the new_nodes address into head
             return;
         }
 
@@ -99,8 +118,7 @@ public:
     doublyNode *prev;
 
     // constructor
-    doublyNode(int data){
-        singlyNode(data);
+    doublyNode(int data) : singlyNode(data){
         prev = NULL;
     }
 };
@@ -125,6 +143,9 @@ int main (){
 
     ll.print();
     ll.reverse_LL();
+    ll.print();
+    
+    ll.insert_start(12);
     ll.print();
 
     return 0;
