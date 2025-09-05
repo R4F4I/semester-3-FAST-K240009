@@ -30,18 +30,18 @@ public:
     }
 
     // insert a data at the end of the node
-    void insert_end(int data){ // pass the head pptr's address to pass byref
+    void insert_end(int data){
         // allocate memory (using new) of size node, return type pointer of node, why? to prevent the local var from being destroyed when the function ends (DMA prevents the var from being destroyed automatically) 
         node *new_node = new node(data);
         
-        // check if value of head ptr is NULL
+        // empty LL checker
         if (head == NULL) // the value of head ptr
         {
             head = new_node;
             return;
         }
 
-        // move to the end of the linked list and get the last node to point to the new node
+        // traverse to the end of ll
         
         node *temp = head; // copy head pointer's value into temp
         while (temp->next!=NULL)
@@ -52,6 +52,30 @@ public:
         // now that temp is null, get it to store the new_node's address
         temp->next = new_node;
     }
+
+    void reverse_LL(){
+        if (head == NULL)
+        {
+            return;
+        }
+
+        node *prev=NULL, *curr=NULL, *next=this->head;
+
+        while (next!=NULL)
+        {
+            // progress forward
+            prev = curr;
+            curr = next;
+            next = next->next;
+
+            // reverse the pointer of the curr node
+            curr->next = prev;
+        }
+        // then the head will point to the last node, since next will be NULL meaning curr will point to the last node
+        head = curr;
+        
+    }
+
 
     void print(){
         node *temp = head; // a temporary pointer to traverse through the LL
@@ -77,6 +101,8 @@ int main (){
     ll.insert_end(40);
     ll.insert_end(50);
 
+    ll.print();
+    ll.reverse_LL();
     ll.print();
 
     return 0;
