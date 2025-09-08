@@ -45,12 +45,35 @@ input 2,3 -> false (both dont have a star at the same index)
 using namespace std;
 
 
+bool checkMutuals(bool arr[][5], int f1,int f2){
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (arr[f1][i] == true && arr[f2][i] == true)
+        {
+            return true;
+        }
+    }
+    return false;
+    
+
+}
 
 
 
 int main(){
 
+    bool array[5][5] = {
+        {false, true , false, true , true},
+        {true , false, true , false, true},
+        {false, true , false, false, false},
+        {true , false, true , false, true},
+        {true , true , false, true , false},
 
+    };
+
+    std::cout << checkMutuals(array, 1,4) << std::endl;
+    std::cout << checkMutuals(array, 2,3) << std::endl;
 
 
     return 0;
