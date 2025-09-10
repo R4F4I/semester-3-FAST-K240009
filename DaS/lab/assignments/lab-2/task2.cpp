@@ -37,7 +37,7 @@ class dynamicList{
         // assign null values to the new arr
         for (size_t i = length; i < length+5; i++)
         {
-            list[i]=-1;
+            list[i]=0;
         }
         
     }

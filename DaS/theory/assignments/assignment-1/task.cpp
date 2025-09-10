@@ -68,11 +68,11 @@ public:
     // constructor
     singlyNode(int data){
         this->data = data;
-        next = NULL;
+        next = nullptr;
     }
     singlyNode(){
         this->data = 0;
-        next = NULL;
+        next = nullptr;
     }
 };
 class singly_LL
@@ -81,13 +81,13 @@ public:
     singlyNode* head;
     int length;
     singly_LL(){
-        head = NULL;
+        head = nullptr;
     }
 
     void checkLength(){ // of LL
         singlyNode *temp=head;
         int i =0;
-        while(temp!=NULL){
+        while(temp!=nullptr){
             temp = temp->next;
             i++;
         }
@@ -99,7 +99,7 @@ public:
         singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
-        if (head == NULL) // the value of head ptr
+        if (head == nullptr) // the value of head ptr
         {
             head = new_node;
             return;
@@ -124,7 +124,7 @@ public:
 
         int i = 0;
 
-        singlyNode *prev=NULL, *next=head;
+        singlyNode *prev=nullptr, *next=head;
 
 
         while (i!=pos)
@@ -145,7 +145,7 @@ public:
         singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
-        if (head == NULL) // the value of head ptr
+        if (head == nullptr) // the value of head ptr
         {
             head = new_node; // copy the new_nodes address into head
             return;
@@ -154,7 +154,7 @@ public:
         // traverse to the end of ll
         
         singlyNode *temp = head; // copy head pointer's value into temp
-        while (temp->next!=NULL)
+        while (temp->next!=nullptr)
         {
             // temp->next is sam (*temp).next, meaning temp is being dereferenced and the next value of that node is being store in the temp pointer
             temp = temp->next;
@@ -165,7 +165,7 @@ public:
 
     void print(){
         singlyNode *temp = head; // a temporary pointer to traverse through the LL
-        while (temp!=NULL)
+        while (temp!=nullptr)
         {
             printf("%d -> ", temp->data);
             temp = temp->next;
@@ -175,14 +175,15 @@ public:
     }
 };
 
+
 template <typename T>
 class dynamicList{
-    T *list ;
+    T **list ;
     int length; // size of array
     
     
     void allocateSpace(){
-        T *newArr = new T[length+5];
+        T **newArr = new T*[length+5];
         for (size_t i = 0; i < length; i++)
         {
             newArr[i] = list[i];
@@ -194,7 +195,7 @@ class dynamicList{
         // assign null values to the new arr
         for (size_t i = length; i < length+5; i++)
         {
-            list[i]=-1;
+            list[i] = nullptr;
         }
         
     }
@@ -210,25 +211,24 @@ class dynamicList{
     }
 
 public:
-    T sum;
     int population; // num of members / non empty blocks
     dynamicList(){
-        list = new T[5];
+        list = new T*[5];
 
         for (size_t i = 0; i < 5; i++){
-            list[i] = 0;
+            list[i] = nullptr;
         }
         length = 5;
         population = 0;
         
     }
 
-    dynamicList(T val){
+    dynamicList(T* val){
         dynamicList();
         list[0] = val;
     }
 
-    void addVal(T score){
+    void addVal(T* score){
         checkPop();
         if (length - population<3){
             // allocate memory to the marks array
@@ -238,25 +238,22 @@ public:
         list[population] = score;
         population++;
 
-        getSum();
     }
 
-    
-    void getSum(){
-        checkPop();
-        sum = 0;
-        for (size_t i = 0; i < population; i++)
+    // compares the last val of list with all prev values, works for only one other duplicate, if found returns true
+    bool checkDuplicate(){
+        for (int i = 0; i < population; i++)
         {
-            sum+=list[i];
+            if (list[i]==list[population])
+            {
+                return true;
+            }
+            
         }
-        std::cout << "sum: " <<sum<< std::endl;
+        return false;
+        
     }
 
-    void average(){
-        std::cout << "average: " <<sum/population<< std::endl;
-
-    }
-    
 
     void print(){
         checkPop();
@@ -266,7 +263,6 @@ public:
         }
         std::cout << std::endl;
     }
-
 
 };
 
@@ -287,10 +283,15 @@ int main(){
     ll.insert_end(9);
     ll.insert_end(10);
 
+    ll.print();
+
     // Create a cycle for testing: make the last node point to the 3rd node (data = 3)
     singlyNode* temp = ll.head;
+    std::cout << "temp: "<< temp << std::endl;
     singlyNode* cycleStart = nullptr;
+    std::cout << "cycleStart: "<< cycleStart << std::endl;
     while (temp->next != nullptr) {
+        std::cout << "cycleStart: "<< cycleStart << std::endl;
         if (temp->data == 3) {
             cycleStart = temp;
         }
@@ -301,29 +302,31 @@ int main(){
     }
 
     // Cycle detection and breaking logic
+    dynamicList<singlyNode> pointers;
 
-    dynamicList
+    
+    singlyNode *temp2 = ll.head;
+    
+    while (temp2->next !=nullptr)
+    {
+        pointers.addVal(temp2);
+        pointers.print();
+        temp2 = temp2->next;
+        if (pointers.checkDuplicate())
+        {
+            pointers.print();
+            // if the latest entry in the list is a duplicate then that means that temp2->next must be made into a nullptr
+            temp2->next = nullptr;
+        }
+        
+    }
     
 
-    // The Floyd's Cycle-Finding Algorithm (also known as the "tortoise and hare" algorithm) is used here.
-    // Two pointers, 'slow' and 'fast', start from the head of the linked list.
-    // 'slow' moves one step at a time, while 'fast' moves two steps at a time.
-    // If there is a cycle, 'fast' will eventually catch up to 'slow' (i.e., slow == fast).
-    // If 'fast' reaches the end of the list (nullptr), then there is no cycle.
 
-    // Once a cycle is detected (slow == fast), to find the starting node of the cycle:
-    // Reset 'slow' to the head of the list.
-    // Keep 'fast' at the meeting point.
-    // Move both 'slow' and 'fast' one step at a time.
-    // The point where they meet again is the starting node of the cycle.
-
-    // To break the cycle:
-    // Traverse from the meeting point (where slow and fast met to find the cycle start) until the node *before* the cycle start.
-    // This is done by moving 'fast' until 'fast->next' is equal to 'slow' (the cycle start).
-    // Once found, set 'fast->next' to nullptr, effectively breaking the cycle.
+    std::cout << "--------------------------" << std::endl;
     
-
     ll.print();
+    std::cout << "--------------------------" << std::endl;
     
 
 
