@@ -19,3 +19,4 @@ COAL/COAL/COAL/*
 !COAL/COAL/COAL/*.asm
 
 *.exe
+*.out
