@@ -211,86 +211,6 @@ public:
 };
 
 
-class doublyNode
-{
-public:
-    int data;
-    doublyNode *prev, *next;
-
-    // constructor
-    doublyNode(int data){
-        this->data = data;
-        prev = NULL;
-        next = NULL;
-    }
-};
-
-
-class doubly_LL
-{
-public:
-    doublyNode *head;
-
-    doubly_LL(){
-        head = NULL;
-    }
-
-    void insert_end(int data){
-        doublyNode *new_node = new doublyNode(data);
-        if (head==NULL)
-        {
-            head = new_node;
-            new_node->prev = NULL; // first node has no prev node to point to
-            return;
-        }
-
-        doublyNode *temp = head;
-        while (temp->next!=NULL)
-        {
-            temp = temp->next;
-        }
-        temp->next = new_node;
-        new_node->prev = temp; // new node will also point to prev node
-        
-
-
-        
-    }
-
-    void reverse_LL(){
-        // simply switch the prev pointer, and next pointer values
-
-        if (head!=NULL)
-        {
-            doublyNode *prev = NULL, *temp = head, *swap = NULL; // to be used to swap the place of both pointers
-            // 2 pointers will be used, swap will occur using prev pointer, temp will be used to traverse ahead
-            while (temp->next!=NULL)
-            {
-                prev = temp;
-                temp = temp->next;
-
-                swap = prev->prev;
-                prev->prev = prev->next;
-                prev->next = swap;
-            }
-        }
-    }
-    void print(){
-        doublyNode *temp = head; // a temporary pointer to traverse through the LL
-        while (temp!=NULL)
-        {
-            printf("%p | ", temp->prev);
-            printf("%d | ", temp->data);
-            printf("%p", temp->next);
-            printf("\n");
-            temp = temp->next;
-        }
-        printf("\n");
-        
-    }
-};
-
-
 int main (){
 
     singly_LL ll;
@@ -319,23 +239,5 @@ int main (){
     ll.remove_pos(3);
     ll.print();
     
-    doubly_LL newLL;
-    
-    printf("################\n");
-    
-    newLL.insert_end(11);
-    newLL.print();
-    newLL.insert_end(10);
-    newLL.insert_end(20);
-    newLL.insert_end(30);
-    newLL.insert_end(40);
-    newLL.insert_end(50);
-
-    newLL.print();
-
-
-    // newLL.reverse_LL();
-    // newLL.print();
-
     return 0;
 }
