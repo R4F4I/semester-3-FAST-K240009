@@ -21,7 +21,7 @@ Output: Linked List is a Palindrome
 
 using namespace std;
 
-
+// for palindrome checking, reach the middle of LL, then 'break' the LL, then reverse the end half of the LL, then compare from the two ends, 
 
 
 
