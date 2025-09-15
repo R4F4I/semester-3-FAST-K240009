@@ -3,7 +3,6 @@
 Task#5
 Solve the following problem using a Singly Linked List.
 Given a Linked List of integers or string, write a function to check if the entirety of the linked list is a
-
 palindrome or not
 Examples:
 Input: 1 -> 0 -> 2 -> 0 -> 1 -> NULL
