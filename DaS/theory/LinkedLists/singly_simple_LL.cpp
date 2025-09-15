@@ -16,11 +16,11 @@ public:
     // constructor
     singlyNode(int data){
         this->data = data;
-        next = NULL;
+        next = nullptr;
     }
     singlyNode(){
         this->data = 0;
-        next = NULL;
+        next = nullptr;
     }
 };
 class singly_LL
@@ -29,13 +29,13 @@ public:
     singlyNode* head;
     int length;
     singly_LL(){
-        head = NULL;
+        head = nullptr;
     }
 
     void checkLength(){ // of LL
         singlyNode *temp=head;
         int i =0;
-        while(temp!=NULL){
+        while(temp!=nullptr){
             temp = temp->next;
             i++;
         }
@@ -47,7 +47,7 @@ public:
         singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
-        if (head == NULL) // the value of head ptr
+        if (head == nullptr) // the value of head ptr
         {
             head = new_node;
             return;
@@ -72,7 +72,7 @@ public:
 
         int i = 0;
 
-        singlyNode *prev=NULL, *next=head;
+        singlyNode *prev=nullptr, *next=head;
 
 
         while (i!=pos)
@@ -93,7 +93,7 @@ public:
         singlyNode *new_node = new singlyNode(data);
         
         // empty LL checker
-        if (head == NULL) // the value of head ptr
+        if (head == nullptr) // the value of head ptr
         {
             head = new_node; // copy the new_nodes address into head
             return;
@@ -102,7 +102,7 @@ public:
         // traverse to the end of ll
         
         singlyNode *temp = head; // copy head pointer's value into temp
-        while (temp->next!=NULL)
+        while (temp->next!=nullptr)
         {
             // temp->next is sam (*temp).next, meaning temp is being dereferenced and the next value of that node is being store in the temp pointer
             temp = temp->next;
@@ -131,16 +131,16 @@ public:
 
     // 2nd last node will simply point to null
     void remove_end(){
-        if (head!=NULL)
+        if (head!=nullptr)
         {
-            singlyNode *prev=NULL, *next=head;
+            singlyNode *prev=nullptr, *next=head;
             // traverse to end with 2 pointers
-            while (next->next!=NULL) // check whether the next pointer is pointing to the last node
+            while (next->next!=nullptr) // check whether the next pointer is pointing to the last node
             {
                 prev = next;
                 next = next->next;
             }
-            prev->next = NULL;
+            prev->next = nullptr;
             // this will leave a dangling node
 
             delete next; // deleting the dangling node
@@ -149,14 +149,14 @@ public:
 
     // remove node at nth position
     void remove_pos(int pos){
-        if (head!=NULL)
+        if (head!=nullptr)
         {
             checkLength();
             if (pos>this->length)
             {
                 return;
             }
-            singlyNode *prev = NULL, *curr = NULL, *next = head;
+            singlyNode *prev = nullptr, *curr = nullptr, *next = head;
             while (pos-- != 0)
             {
                 prev = curr;
@@ -172,17 +172,36 @@ public:
             delete curr;
         }
     }
+
+    void remove_val(int data){
+        singlyNode *curr = nullptr, *prev=nullptr, *next = head;
+        // traverse through the entire LL
+        while (next != nullptr)
+        {
+            prev = curr;
+            curr = next;
+            next = next->next;
+
+            if (curr->data == data)
+            {
+                // prev node will point to next
+                prev->next = next;
+                // delete the curr node
+                delete curr;
+            }
+        }
+    }
     
 
     void reverse_LL(){
-        if (head == NULL)
+        if (head == nullptr)
         {
             return;
         }
         // need 3 pointers
-        singlyNode *prev=NULL, *curr=NULL, *next=this->head;
+        singlyNode *prev=nullptr, *curr=nullptr, *next=this->head;
 
-        while (next!=NULL)
+        while (next!=nullptr)
         {
             // progress forward or 'crawl' through the LL
             prev = curr;
@@ -192,7 +211,7 @@ public:
             // reverse the pointer of the curr node
             curr->next = prev;
         }
-        // then the head will point to the last node, since next will be NULL meaning curr will point to the last node
+        // then the head will point to the last node, since next will be nullptr meaning curr will point to the last node
         head = curr;
         
     }
@@ -200,7 +219,7 @@ public:
 
     void print(){
         singlyNode *temp = head; // a temporary pointer to traverse through the LL
-        while (temp!=NULL)
+        while (temp!=nullptr)
         {
             printf("%d -> ", temp->data);
             temp = temp->next;
@@ -237,6 +256,9 @@ int main (){
     ll.remove_end();
     ll.print();
     ll.remove_pos(3);
+    ll.print();
+
+    ll.remove_val(20);
     ll.print();
     
     return 0;
