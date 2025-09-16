@@ -78,7 +78,7 @@ public:
             
             
             temp = temp->prev;
-        }
+        } 
         
         // after reaching last node, perform last swap
         swap = temp->next;
