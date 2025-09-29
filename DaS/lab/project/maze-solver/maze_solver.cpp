@@ -12,84 +12,6 @@
 
 using namespace std;
 
-
-class crawl{
-
-
-public:
-
-    int X,Y, dir;
-
-    crawl(int x, int y, int dir){
-        X=x;
-        Y=y;
-        this->dir = dir;
-    }
-
-    void move(){
-        
-        if (dir == 5)
-        {
-            dir=1; // to prevent overflow
-            
-        }
-
-        switch (dir)
-        {
-        case 1:
-            Y--; // up
-            break;
-        
-        case 2:
-            Y++; // down
-            break;
-        
-        case 3:
-            X--; // left
-            break;
-        
-        case 4:
-            X++; //right
-            break;
-        
-        default:
-            break;
-        }
-    }
-
-    void backtrack(){
-        
-        if (dir == 5)
-        {
-            dir=1; // to prevent overflow
-        }
-
-        switch (dir)
-        {
-        case 1:
-            Y++; // up
-            break;
-        
-        case 2:
-            Y--; // down
-            break;
-        
-        case 3:
-            X++; // left
-            break;
-        
-        case 4:
-            X--; //right
-            break;
-        
-        default:
-            break;
-        }
-        
-    }
-
-};
-
 void printMaze(const vector<vector<char>>& maze) {
     for (const auto& row : maze) {
         for (char cell : row) {
@@ -289,34 +211,9 @@ int main() {
         {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#','#', '#', '#', '#', '#'}
     };
 
-    // std::vector<std::vector<char>> maze;
+
     generateMaze(maze,25,25);
 
-
-    // std::vector<std::vector<char>> renderedMaze = maze;
-
-
-    // Print the maze to verify
-    // for (int i = 0; i < 20; ++i) {
-    //     for (int j = 0; j < 20; ++j) {
-    //         std::cout << maze[i][j] << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-
-    
-    // crawl target(18,18,0);
-    // crawl crawler(1,1,4);
-
-    for (size_t i = 0; i < 25; i++)
-    {
-        for (size_t j = 25*i; j < 25+ i*25; j++)
-        {
-            std::cout <<"0 ";
-        }
-        std::cout << std::endl;
-    }
-    
     std::cout << std::endl;
 
     int startX=1;
@@ -324,7 +221,7 @@ int main() {
     int targetX=24;
     int targetY=24;
 
-    // solve_maze(maze,startX,startY,targetX,targetY);
+    solve_maze(maze,startX,startY,targetX,targetY);
 
     return 0;
 }
