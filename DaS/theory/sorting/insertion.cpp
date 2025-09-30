@@ -117,6 +117,43 @@ void insertionSortV2(int arr[], int size){
 }
 
 
+void insertionSort(int arr[], int size, int dir){ // 1 for asc, -1 for desc
+    // 1. all val of left are sorted
+    for (size_t i = 0; i < size; i++){
+        // 2. pick the first val from right ('key')
+        int key = arr[i];
+        // 3. compare key with all val at the left
+        // 4. until key<val, shift all the val in arr to the right side
+        int j = i-1;
+        if (dir==1)
+        {
+            while (j>=0 && arr[j]>key)
+            {
+                // shift
+                arr[j+1]=arr[j];
+                j--;
+                // printArr(arr,size);
+            }
+            // 5. insert the key
+            arr[j+1]=key;
+        }
+        if (dir==-1)
+        {
+            while (j>=0 && arr[j]<key)
+            {
+                // shift
+                arr[j+1]=arr[j];
+                j--;
+                // printArr(arr,size);
+            }
+            // 5. insert the key
+            arr[j+1]=key;
+        }
+        
+    }
+}
+
+
 int main(){
 
     

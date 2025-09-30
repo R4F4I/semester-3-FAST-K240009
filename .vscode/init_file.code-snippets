@@ -38,6 +38,39 @@
 				],
 		"description": "getter in cpp"
 	},
+	"cpp input":{
+		"scope": "cpp",
+		"prefix":"input",
+		"body":[
+		"cout<<\"$1: \";cin>>$2;"
+		],
+		"description": "take user input"
+	},
+	"swap" :{
+		"scope": "cpp",
+		"prefix": "swapFunc",
+		"body": [
+			"template <typename T>",
+			"void swap(T& a, T& b){",
+			"    T temp = a;",
+			"    a=b;",
+			"    b=temp;",
+			"}",
+		]
+	},
+	"print arr":{
+		"scope": "cpp",
+		"prefix": "printArr",
+		"body": [
+			"template <typename T>",
+			"void printArr(T arr[], int size){",
+			"   for (size_t i = 0; i < size; i++){",
+			"       std::cout << arr[i]<< \" \";",
+			"   }",
+			"   cout<<endl;",
+			"}",
+		]
+	},
 	"init_cpp":{
 		"scope": "cpp",
 		"prefix": "init",
