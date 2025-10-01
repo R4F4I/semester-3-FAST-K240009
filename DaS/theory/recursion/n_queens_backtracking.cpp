@@ -13,39 +13,76 @@ placing n queens on a n x n board, such that they are not in eac others way
 
 using namespace std;
 
+
 bool isSafe(int** arr,int n,int m, int size){
-    // check if horizontally, or vertically or diagonally if there is no queen find
-    // for (size_t i = 0; i < size; i++)
-    // {
-    //     if (arr[n+i][m+i]==1)
-    //     {
-    //         return false;
-    //     }
-    //     if (arr[n-i][m+i]==1)
-    //     {
-    //         return false;
-    //     }
-    //     if (arr[n+i][m-i]==1)
-    //     {
-    //         return false;
-    //     }
-    //     if (arr[n-i][m-i]==1)
-    //     {
-    //         return false;
-    //     }
-        
-    //     if (arr[n][i]==1)
-    //     {
-    //         return false;
-    //     }
-    //     if (arr[i][m]==1)
-    //     {
-    //         return false;
-    //     }
-        
-    // }
+   
 
+    // vertical
+    for (size_t i = n; i < size-n; i++){
+        if (arr[i][m]==1)
+            return false;
+    }
+    for (size_t i = n; i > 0; i--){
+        if (arr[i][m]==1)
+            return false;
+    }
+    cout<<"vert cleared\n";
 
+    // horz
+    for (size_t i = m; i < size-m; i++){
+        if (arr[n][i]==1)
+            return false;
+    }
+    for (size_t i = m; i > 0; i--){
+        if (arr[n][i]==1)
+            return false;
+    }
+    cout<<"horz cleared\n";
+
+    // diagonal
+    
+    
+    /// +ve/ grad      /
+    //// left side -> /
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[n+i][m-i]==1)
+            return false;
+    } 
+    //// right side -> /
+    ////              /
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[n+i][m+i]==1)
+            return false;
+    }
+    
+    cout<<"diag +ve cleared\n";
+    
+    
+    
+    /// -ve\ grad
+    //// left side  -> \ 
+    ////                \ 
+    //
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[n-i][m+i]==1)
+            return false;
+    }
+    cout<<"     left side cleared\n";
+    ////               \  
+    //// right side ->  \ 
+    //
+    for (size_t i = 0; i < size; i++)
+    {
+        if (arr[n+i][m+i]==1)
+            return false;
+    }
+    cout<<"     right side cleared\n";
+    
+    cout<<"diag -ve cleared\n";
+    
 
     return true;
 
@@ -146,14 +183,14 @@ int main(){
         }
         
     }
-    arr[1][2]=1;
+    arr[0][3]=1;
 
     printArr(arr,n);
     
     // bool t = placedQ(arr,0,0,n);
     // printArr(arr,n);
 
-    std::cout << isSafe(arr,1,4,3) << std::endl;
+    std::cout << isSafe(arr,1,1,3) << std::endl;
 
 
 
