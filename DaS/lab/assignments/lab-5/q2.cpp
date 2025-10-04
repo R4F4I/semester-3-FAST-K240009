@@ -15,8 +15,8 @@ to the next player. Solve it using Direct Recursion?
 
 #include <iostream>
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <cstdlib>  // for randomness
+#include <ctime>    // for seeding
 
 using namespace std;
 
