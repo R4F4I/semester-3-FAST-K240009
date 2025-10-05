@@ -1,6 +1,4 @@
 INCLUDE Irvine32.inc
-
-
 .data
 
 char byte "*"
@@ -8,11 +6,12 @@ char byte "*"
 .code
 main PROC
 
-mov ecx, 5
-mov ebx, 0 ; for the conditional loop outside
-mov edx, offset char
+mov ebx, 1 ; for the conditional loop outside
+; mov edx, offset char
 
 LOOP1:
+    ; reassign ecx after every inner loop is done
+    mov ecx, 5 
 
     LOOP2:
         mov al, char
@@ -24,8 +23,7 @@ LOOP1:
 
 inc ebx
 cmp ebx, 5
-call dumpRegs
-jl LOOP1
+jng LOOP1
 
 
 exit
