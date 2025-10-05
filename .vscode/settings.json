@@ -51,5 +51,15 @@
         "iomanip": "cpp",
         "vector": "cpp",
         "thread": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "ENDP",
+        "movsx",
+        "movzx",
+        "Regs",
+        "SBYTE",
+        "SDWORD",
+        "writedec",
+        "xchg"
+    ]
 }
