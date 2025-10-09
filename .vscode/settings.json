@@ -50,7 +50,19 @@
         "xutility": "cpp",
         "iomanip": "cpp",
         "vector": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "sstream": "cpp",
+        "stack": "cpp",
+        "stop_token": "cpp",
+        "string": "cpp",
+        "fstream": "cpp"
     },
     "cSpell.words": [
         "ENDP",
