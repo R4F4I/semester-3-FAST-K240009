@@ -61,7 +61,7 @@ using namespace std;
         This prevents the program from crashing by trying to access a non-existent order.
 
     Explain your approach for printing all the processed orders in the order they were received.
-    
+
     When an order is processed, it is `dequeue`'d from the main "pending orders" queue. To keep a
     record, we need a second data structure to act as a historical log. I will create a simple
     "OrderHistory" linked list. Every time an order is successfully dequeued, it will be added to
@@ -263,7 +263,7 @@ int main() {
     // Create Order 1 with two items
     Order order1;
     order1.itemsHead = new OrderItem{"Margherita Pizza", 1, nullptr};
-    order1.itemsHead->next = new OrderItem{"Coke", 2, nullptr};
+    order1.itemsHead->next = new OrderItem{"Coke", 2, nullptr}; 
     pendingOrders.enqueue(order1);
 
     // Create Order 2 with one item
