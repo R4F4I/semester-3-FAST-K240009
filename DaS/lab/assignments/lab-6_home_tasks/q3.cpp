@@ -126,97 +126,8 @@ int prec(char c){
     return -1;
 }
 
-// // only the operators will be pushed int
-// string convert_infix_to_postfix(string expr){
 
-//     // for a+b*c, we will only get
-//     //     abc*+, due to precedence, (), ^, /, *,+,-
-
-//     // use 2 stacks, one to output and one for operators
-//     Stack oPStack;
-//     string outStr;
-
-//     char Char;
-//     for (size_t i = 0; i < expr.length(); i++)
-//     {
-//         std::cout << "e" << std::endl;
-//         Char = expr[i];
-
-//         std::cout << "prec " <<outStr<< std::endl;
-        
-
-//         if (!isOp(Char))
-//         {
-//             outStr +=Char;
-//         }
-//         else if (Char=='(')
-//         {
-//             oPStack.push(Char);
-//         }
-//         else if (Char==')')
-//         {
-//             while (!oPStack.isEmpty() && oPStack.top() != '(')
-//             {
-//                 outStr += oPStack.pop();
-//             }
-//             if (oPStack.isEmpty())
-//             {
-//                 return "Error";
-//             }
-            
-            
-//             oPStack.pop();
-            
-//         }
-
-        
-
-//         else{
-//             while (!oPStack.isEmpty() && oPStack.top() != '(')
-//             {
-//                 char topOp = oPStack.top();
-//                 int currPrec = prec(Char);
-
-
-//                 if (
-//                     prec(oPStack.top() > prec(Char)) ||
-//                     prec(oPStack.top() == prec(Char))
-
-//                 )
-//                 {
-//                     outStr += oPStack.pop();
-//                 } else {
-//                     break;
-//                 }
-                
-//             }
-//             oPStack.push(Char);
-            
-//         }
-
-//         // after pushing check the precedences in oPstack, if the top val has precedence than one below, pop it, and concatenate, in the new str
-
-//     }
-
-//     while (!oPStack.isEmpty())
-//     {
-//         if (oPStack.top() == '(')
-//         {
-//             return "Error";
-//         }
-//         outStr += oPStack.pop();
-//     }
-    
-
-
-//     oPStack.print();    
-    
-    
-//     return outStr;
-
-
-// }
-
+// https://www.calcont.in/Conversion/infix_to_postfix
 
 // first cycle through the entire string using for loop
 // this will create a new string with all the var, and a stack with all the opcodes
@@ -226,52 +137,59 @@ string convert_infix_to_postfix(string expr){
     string resString;
     Stack opStack;
 
-
+    // 1. cycle through the expression
     for (size_t i = 0; i < expr.length(); i++)
     {
-        // if ( ) are found, extract the text b/w them and perform a recursive function on that string
+        // if (  is found, then perform the push it in stack, any operator before ) is pushed, if any operator that is of lower precedence is to be pushed, then perform the standard dump UNTIL ( IS REACHED DO NOT EMPTY IT ANY FURTHER
 
-        // if (expr[i]=='(')
-        // {
-        //     i++;
-        //     string encapExpr="";
-        //     while (expr[i]!=')')
-        //     {
-        //         encapExpr += expr[i];
-        //         i++;
-        //         cout<< "encapExpr:" <<encapExpr<<endl;
-        //     }
-        //     encapExpr = convert_infix_to_postfix(encapExpr);
-        //     resString +=encapExpr;
-        // }
+        // 1.1 push () into the stack as they are operators
+        if (expr[i] == '(') {
+            opStack.push(expr[i]);
+        }
+        
+        // 1.2 if ) is found the dump all operators before (
+        else if (expr[i] == ')') {
+            
+            
+            while (!opStack.isEmpty() && opStack.top() != '(') {
+                resString += opStack.pop();
+            }
+            // Pop and discard the opening parenthesis '('
+            if (!opStack.isEmpty()) {
+                opStack.pop(); 
+            }
+        }
         
 
-
-        if (!isOp(expr[i]))
+        // 1.3 if not an operator simply pass it through ... into the resultant expression
+        else if (!isOp(expr[i]))
         {
             resString += expr[i];
-        } else
+        } 
+        else
         {
-            // now we will check if the op to be push has a higher precedence the then the top val in stack, if not then directly concat it in res
-            // cout<<prec(opStack.top())<< "-> prec";
+            // 1.4 while being pushed, if the new operator has a lower precedence, then dump the stack into the reString, then push the new operator
 
-
-            
-            
-            
-            // the new op has a higher prec, stack it, if it has lesser prec, pop the entire stack, into postfix
+            // the new op has a higher prec, stack it, if it has lesser prec, pop (dump) the entire stack, into postfix, 
             if (!opStack.isEmpty() && (prec(expr[i]) <= prec(opStack.top())) )
             {
-                while (!opStack.isEmpty())
+                // 1.5 the stack will only be emptied until the top val is (, ( will only be cleared by a )
+                while (!opStack.isEmpty() 
+                && opStack.top()!='('
+            )
                 {
+                    // std::cout << "top: ";
+                    // opStack.print();
                     resString += opStack.pop();
-                    cout<< "resString: "<<resString<<endl;
                 }
-                
             }
+            // the lower precedent operator being pushed into stack after the stack is emptied
             opStack.push(expr[i]);
-
+            
         }
+
+        opStack.print();
+        cout<< "resString: "<<resString<<endl;
     }
     
     
@@ -314,25 +232,16 @@ int main(){
     //      abcd^e-fgh*+^*+-i
     // abcd^e-fgh*+^*+i-
     
-    // string check = "a+b*c^d-e^f+g*h-i";
-    // a+b*c^d-e^f+g*h-i
-    // a+b*cd^-ef^+gh*-i
-    // a+bcd^*-ef^+gh*-i
-    // abcd^*+ef
+    
 
    
 
-    // string expr = "a+b*(c^d-e)^(f+g*h)-i";
+    string expr = "a+b*(c^d-e)^(f+g*h)-i";
+    cout <<expr<<endl;
 
-    // string newExpr = convert_infix_to_postfix(expr);
-
-    // std::cout << newExpr << std::endl;
-
-    string check = "a+b*c^d-e^f+g*h-i";
-    cout <<"showing check1 "<<endl;
-    check = convert_infix_to_postfix(check);
-    cout <<"showing check2 "<<endl;
-    std::cout << check << std::endl;
+    string newExpr = convert_infix_to_postfix(expr);
+    
+    cout << newExpr << endl;
 
 
     return 0;
