@@ -30,7 +30,7 @@ You are a seismologist analyzing seismic activity in the Pacific Ring of Fire. Y
             - This is the core `numpy` challenge. You must implement the **Haversine formula** to calculate the distance in kilometers between the city and _every earthquake in the dataset simultaneously_ using vectorized operations.
             - The formula requires converting latitudes and longitudes to radians (`np.radians`).
             - The Haversine formula:
-                $a=\sin^2(2Δϕ)+\cos(ϕ_{1})\cos(ϕ_{2})\sin^2(2Δλ)$
+                
                 c=2⋅atan2(a,1−a)
                 d=R⋅c
                 (where ϕ is latitude, λ is longitude, R is the Earth's radius (6371 km), and Δ is the difference).
@@ -55,58 +55,90 @@ You are a seismologist analyzing seismic activity in the Pacific Ring of Fire. Y
  """
 
 import requests
+import json
+import numpy as np
 
 api = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
 
 class EarthquakeApiClient:
-    def __init__(self,api_url = ""):
-         self.api_url = api_url
+    """
+    Fetches and processes earthquake data from the USGS API.
+    """
+    def __init__(self, api_url):
+        self.api_url = api_url
+        print(f"Initializing client for API: {self.api_url}\n")
 
-    def fetch_database_data(self):
+    def fetch_earthquake_data(self):
+        """
+        Fetches earthquake data and compiles it into a NumPy array.
+        
+        Returns:
+            numpy.ndarray: A 2D array where each row is an earthquake
+                           and columns are [latitude, longitude, depth, magnitude].
+                           Returns None if the request fails.
+        """
+        print("Fetching earthquake data from USGS...")
         try:
-            response = requests.get(self.api_url)
-            response.raise_for_status()
-            for header, value in response.headers.items():
-                print(f"    {header}: {value}")
-        except Exception as e:
-            print(e)
+            response = requests.get(self.api_url, timeout=10)
+            response.raise_for_status()  # Check for 4xx/5xx errors
+            
+            # --- START OF FIX ---
+            # Instead of response.json(), we use json.loads(response.text).
+            # This manually parses the text content and doesn't rely on
+            # the server's 'Content-Type' header.
+            
+            if not response.text:
+                print("Error: API returned an empty response.")
+                return None
+                
+            try:
+                # Manually parse the JSON from the response text
+                data = json.loads(response.text)
+            except json.JSONDecodeError as e:
+                # This will trigger if the content is not valid JSON
+                print(f"Error: Failed to decode JSON from response. {e}")
+                print("--- Response Content (first 500 chars) ---")
+                print(response.text[:500])
+                print("------------------------------------------")
+                return None
+            # --- END OF FIX ---
+
+            features = data.get('features', [])
+            
+            if not features:
+                print("No earthquake 'features' found in parsed JSON data.")
+                return None
+                
+            processed_data = []
+            for feature in features:
+                try:
+                    coords = feature.get('geometry', {}).get('coordinates', [])
+                    props = feature.get('properties', {})
+                    
+                    # GeoJSON format is [longitude, latitude, depth]
+                    longitude = coords[0]
+                    latitude = coords[1]
+                    depth = coords[2]
+                    magnitude = props.get('mag')
+                    
+                    # We only care about valid, complete entries
+                    if all(isinstance(val, (int, float)) for val in [latitude, longitude, depth, magnitude]):
+                        # Our array format: [latitude, longitude, depth, magnitude]
+                        processed_data.append([latitude, longitude, depth, magnitude])
+                
+                except (IndexError, TypeError, KeyError):
+                    # Skip any malformed feature
+                    continue
+            
+            print(f"Successfully fetched and processed {len(processed_data)} earthquakes.")
+            return np.array(processed_data)
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching data from API: {e}")
+            return None
 
 client = EarthquakeApiClient(api)
-client.fetch_database_data()
+data = client.fetch_earthquake_data()
 
+print(data)
 
-""" 
-import requests
-
-def make_get_request(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
-        print(f"Status Code: {response.status_code}")
-        print("Response Headers:")
-        for header, value in response.headers.items():
-            print(f"  {header}: {value}")
-        
-        # Check if the response has JSON content
-        if 'application/json' in response.headers.get('Content-Type', ''):
-            json_data = response.json()
-            print("\nResponse JSON Data:")
-            print(json_data)
-            return json_data
-        else:
-            print("\nResponse Text Data:")
-            print(response.text)
-            return response.text
-            
-    except requests.exceptions.HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")
-    except requests.exceptions.ConnectionError as conn_err:
-        print(f"Connection error occurred: {conn_err}")
-    except requests.exceptions.Timeout as timeout_err:
-        print(f"Timeout error occurred: {timeout_err}")
-    except requests.exceptions.RequestException as req_err:
-        print(f"An unexpected error occurred: {req_err}")
-
-# Example usage with a placeholder URL
-api_url = "https://jsonplaceholder.typicode.com/posts/1" # A public test API
-make_get_request(api_url) """
