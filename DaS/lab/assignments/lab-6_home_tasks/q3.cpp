@@ -60,7 +60,13 @@ public:
     }
 
     char top(){
-        return head->data;
+        if (head!=nullptr)
+        {
+            /* code */
+            return head->data;
+        }
+        return '-'; // assume a least precedent if the stack is empty
+        
     }
 
     char pop(){
@@ -225,19 +231,19 @@ string convert_infix_to_postfix(string expr){
     {
         // if ( ) are found, extract the text b/w them and perform a recursive function on that string
 
-        if (expr[i]=='(')
-        {
-            i++;
-            string encapExpr="";
-            while (expr[i]!=')')
-            {
-                encapExpr += expr[i];
-                i++;
-                cout<< "encapExpr:" <<encapExpr<<endl;
-            }
-            encapExpr = convert_infix_to_postfix(encapExpr);
-            resString +=encapExpr;
-        }
+        // if (expr[i]=='(')
+        // {
+        //     i++;
+        //     string encapExpr="";
+        //     while (expr[i]!=')')
+        //     {
+        //         encapExpr += expr[i];
+        //         i++;
+        //         cout<< "encapExpr:" <<encapExpr<<endl;
+        //     }
+        //     encapExpr = convert_infix_to_postfix(encapExpr);
+        //     resString +=encapExpr;
+        // }
         
 
 
@@ -249,8 +255,10 @@ string convert_infix_to_postfix(string expr){
             // now we will check if the op to be push has a higher precedence the then the top val in stack, if not then directly concat it in res
             // cout<<prec(opStack.top())<< "-> prec";
 
-            opStack.push(expr[i]);
 
+            
+            
+            
             // the new op has a higher prec, stack it, if it has lesser prec, pop the entire stack, into postfix
             if (!opStack.isEmpty() && (prec(expr[i]) <= prec(opStack.top())) )
             {
@@ -261,6 +269,7 @@ string convert_infix_to_postfix(string expr){
                 }
                 
             }
+            opStack.push(expr[i]);
 
         }
     }
@@ -305,6 +314,11 @@ int main(){
     //      abcd^e-fgh*+^*+-i
     // abcd^e-fgh*+^*+i-
     
+    // string check = "a+b*c^d-e^f+g*h-i";
+    // a+b*c^d-e^f+g*h-i
+    // a+b*cd^-ef^+gh*-i
+    // a+bcd^*-ef^+gh*-i
+    // abcd^*+ef
 
    
 
@@ -314,7 +328,7 @@ int main(){
 
     // std::cout << newExpr << std::endl;
 
-    string check = "a+b*(c^d-e)^(f+g*h)-i";
+    string check = "a+b*c^d-e^f+g*h-i";
     cout <<"showing check1 "<<endl;
     check = convert_infix_to_postfix(check);
     cout <<"showing check2 "<<endl;
