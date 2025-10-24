@@ -12,20 +12,11 @@ for the given scenario?
 * section:      BAI-3A
 
 
+ANS:
+
+the most suitable data structure is a FIFO (First-In, First-Out) Queue.
+the order of the messages is important, any message when sent first should be recieved first,
+
+
 */
 
-#include <iostream>
-
-using namespace std;
-
-
-
-
-
-int main(){
-
-
-
-
-    return 0;
-}

@@ -14,7 +14,6 @@ Use the class of stack created in Task 01 ( Lab Tasks).
 */
 
 #include <iostream>
-#include <stack>
 
 using namespace std;
 
@@ -187,9 +186,6 @@ string convert_infix_to_postfix(string expr){
             opStack.push(expr[i]);
             
         }
-
-        opStack.print();
-        cout<< "resString: "<<resString<<endl;
     }
     
     

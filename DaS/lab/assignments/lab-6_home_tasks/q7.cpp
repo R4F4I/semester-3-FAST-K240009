@@ -22,14 +22,121 @@ transactions to be serviced.
 
 using namespace std;
 
+// A circular queue for the library line
+class Queue {
+private:
+    int* arr;
+    int capacity;
+    int front, rear, currentSize;
 
+public:
+    // Constructor: makes the dynamic array for the line
+    Queue(int size) {
+        if (size <= 0) size = 10; // Just in case
+        capacity = size;
+        arr = new int[capacity];
+        front = 0;
+        rear = -1;
+        currentSize = 0;
+    }
 
+    // Destructor: cleans up the memory
+    ~Queue() {
+        delete[] arr;
+    }
 
+    // --- Required Functions ---
 
-int main(){
+    
+    //   Adds a patron (by ID) to the end of the line.
+    
+    void addPatron(int patronID) {
+        if (currentSize == capacity) {
+            cout << "Line is full. Patron " << patronID << " has to wait." << endl;
+            return;
+        }
 
+        rear = (rear + 1) % capacity;
+        arr[rear] = patronID;
+        currentSize++;
+        cout << "Patron " << patronID << " in line." << endl;
+    }
 
+    
+    //   Services the patron at the front of the line.
+    //   Returns the ID of the patron, or -1 if the line is empty.
+    
+    int servicePatron() {
+        if (currentSize == 0) {
+            cout << "Line is empty. No one to service." << endl;
+            return -1;
+        }
 
+        int servicedPatron = arr[front];
+        front = (front + 1) % capacity;
+        currentSize--;
+        
+        cout << "Servicing patron " << servicedPatron << "." << endl;
+        return servicedPatron;
+    }
+
+    /**
+     * Displays the current line of patrons.
+     */
+    void displayLine() {
+        if (currentSize == 0) {
+            cout << "Line: [ EMPTY ]" << endl;
+            return;
+        }
+
+        cout << "Line (Front to Back): [ ";
+        int i = front;
+        for (int count = 0; count < currentSize; count++) {
+            cout << arr[i] << " ";
+            i = (i + 1) % capacity;
+        }
+        cout << "]" << endl;
+    }
+};
+
+// --- Main Simulation ---
+int main() {
+    // Make a line that can hold 5 people
+    Queue libraryLine(5);
+
+    // Show the empty line
+    libraryLine.displayLine();
+
+    // Patrons 101, 102, 103 arrive
+    libraryLine.addPatron(101);
+    libraryLine.addPatron(102);
+    libraryLine.addPatron(103);
+    libraryLine.displayLine();
+
+    // Service one patron
+    libraryLine.servicePatron();
+    libraryLine.displayLine();
+
+    // More patrons arrive
+    libraryLine.addPatron(104);
+    libraryLine.addPatron(105);
+    libraryLine.addPatron(106); // Line is now full
+    libraryLine.displayLine();
+
+    // Patron 107 tries to join the full line
+    libraryLine.addPatron(107);
+    libraryLine.displayLine();
+
+    // Service everyone else
+    cout << "\n--- Servicing the rest of the line ---" << endl;
+    libraryLine.servicePatron();
+    libraryLine.servicePatron();
+    libraryLine.servicePatron();
+    libraryLine.servicePatron();
+    libraryLine.displayLine();
+
+    // Try to service an empty line
+    libraryLine.servicePatron();
 
     return 0;
 }
