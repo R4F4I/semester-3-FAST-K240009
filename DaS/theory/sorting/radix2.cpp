@@ -34,23 +34,11 @@ public:
     Node *head, *tail;
     // int size;
 
-    Queue(int size = 0){
+    Queue(){
       head=nullptr;
-      tail=nullptr;  
-      this->size = size;
+      tail=nullptr;
     }
 
-    // current number of items in Queue
-    // int  population(){
-    //     Node* temp = head;
-    //     int i = 1;
-    //     while (temp!=tail)
-    //     {
-    //         temp = temp->next;
-    //         i++;
-    //     }
-    //     return i;
-    // }
 
 
     void Enq(int data){
@@ -64,13 +52,6 @@ public:
             return;
         }
 
-        // if (population()>size)
-        // {
-            
-        //     std::cout << "queue overflow!" << std::endl;
-        //     // onw deq a val to enq
-        //     Deq();
-        // }
         head->prev = newNode;
         newNode->next = head;
         head = newNode;
@@ -89,8 +70,19 @@ public:
         int val = tail->data;
         Node* temp = tail;
         tail = tail->prev;
+
+        if(tail!=nullptr){
+            tail->next = nullptr;
+        }else{
+            head = nullptr;
+        }
+
         delete temp;
         return val;
+    }
+
+    bool isEmpty(){
+        return head==nullptr;
     }
 
     int sum(){
@@ -104,17 +96,33 @@ public:
         return sum;
     }
 
-    void print(){
-        Node* temp = head;
-        while (temp!=tail)
+    void print() {
+        Node* temp = head; // Start at the beginning
+        
+        while (temp != nullptr) 
         {
-            std::cout << temp->data <<" ";
+            std::cout << temp->data << " ";
+            
             temp = temp->next;
         }
         
+        std::cout << std::endl; 
     }
 
 };
+
+
+
+void printArr(int arr[], int size){
+
+    
+    for (size_t i = 0; i < size; i++)
+    {
+        std::cout << arr[i]<< " ";
+    }
+    cout<<endl;
+
+}
 
 
 int NthDigit(int number, int k){
@@ -158,45 +166,64 @@ then with theri 2nd digit, 3rd ,4th ...
 */
 void radixSort(int arr[], int size){
 
-    int i = 0;
-
+    
     Queue bins[10];
-
+    int n =0;
     while (!isSorted(arr,size))
     {
-        // put the vals in binss
-        for (size_t j = 0; j < 10; j++)
-        {
+     
         
-            if (NthDigit(arr[j],i)==j)
-            {
-                bins[i].Enq(arr[j]);
-            }
-        }
-        // now dequeue all the values from all the bins, and into the array
-
-        for (size_t i = 0; i < length; i++)
+        // put the vals in bins
+        for (size_t i = 0; i < size; i++)
         {
+            // check arr[i]'s n th digit, put the arr[i]th val in the nth bin
+
+            // bins[i].Enq(arr[i]);
+            int keyDigit = NthDigit(arr[i],n);
+            bins[keyDigit].Enq(arr[i]);
+
+
+            
             
         }
 
+        for (size_t i = 0; i < 10; i++)
+        {
+            // bins[i].print();
+            /* code */
+        }
+        
+
+
+        // now dequeue all the values from all the bins, and into the array
+        
+        int j = 0;
+        for (size_t i = 0; i < 10; i++)
+        {
+            while (!bins[i].isEmpty())
+            {
+                arr[j] = bins[i].Deq();
+                j++;
+            }
+            
+        }
+        
+        n++;
+        
     }
-
-
-
-
-
 }
 
 
 int main(){
-
-    cout << NthDigit(4567,1);
-
-    int arr[] = {958,476,7896,3457,43857,48357,87439,4365,6755,9045};
+    
+    int arr[] = {959,478,7897,3456,4385,4834,8743,43652,67551,90450};
     int size = 10;
-
+    
     radixSort(arr,size);
+    
+    printArr(arr,size);
+    
+    
 
     return 0;
 }
