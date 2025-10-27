@@ -115,7 +115,7 @@ void quickSort(int arr[], int low, int high, long long& comparisons, int strateg
             pivotIndex = low; // Default to first
     }
 
-    // 2. Move pivot to the end (for Lomuto partition)
+    // 2. Move pivot to the end
     swap(arr[pivotIndex], arr[high]);
 
     // 3. Partition the array

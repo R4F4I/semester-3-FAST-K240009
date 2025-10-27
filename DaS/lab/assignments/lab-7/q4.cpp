@@ -47,7 +47,7 @@ void quickSort(Product arr[], int low, int high) {
         return;
     }
 
-    // --- Start of Integrated Partitioning Logic (Lomuto scheme) ---
+    // --- Start of Integrated Partitioning Logic  ---
 
     // 1. Pivot Selection: Choose the last element's price as the pivot.
     int pivotPrice = arr[high].price;
