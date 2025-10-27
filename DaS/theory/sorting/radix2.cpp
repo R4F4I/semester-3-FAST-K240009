@@ -177,26 +177,11 @@ void radixSort(int arr[], int size){
         for (size_t i = 0; i < size; i++)
         {
             // check arr[i]'s n th digit, put the arr[i]th val in the nth bin
-
-            // bins[i].Enq(arr[i]);
             int keyDigit = NthDigit(arr[i],n);
             bins[keyDigit].Enq(arr[i]);
-
-
-            
-            
         }
-
-        for (size_t i = 0; i < 10; i++)
-        {
-            // bins[i].print();
-            /* code */
-        }
-        
-
 
         // now dequeue all the values from all the bins, and into the array
-        
         int j = 0;
         for (size_t i = 0; i < 10; i++)
         {
@@ -205,11 +190,8 @@ void radixSort(int arr[], int size){
                 arr[j] = bins[i].Deq();
                 j++;
             }
-            
         }
-        
         n++;
-        
     }
 }
 
