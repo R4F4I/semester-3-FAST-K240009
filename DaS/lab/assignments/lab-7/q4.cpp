@@ -41,13 +41,11 @@ void swap(Product& a, Product& b) {
 
 
 void quickSort(Product arr[], int low, int high) {
-    // Base case for the recursion:
-    // If the subarray has 0 or 1 element, it's already sorted.
+    // Base case 
     if (low >= high) {
         return;
     }
 
-    // --- Start of Integrated Partitioning Logic  ---
 
     // 1. Pivot Selection: Choose the last element's price as the pivot.
     int pivotPrice = arr[high].price;
