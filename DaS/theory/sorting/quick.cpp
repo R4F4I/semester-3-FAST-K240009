@@ -61,14 +61,13 @@ void quickSort(int arr[],int size, int low, int high){
         {
         
             std::cout << "moving on..."<<endl;
-            j++;
         }
         else if (arr[j]< arr[pivot])
         {
             i++;
             swap(arr[i],arr[j]);
-            j++;
         }
+        j++;
     
     }
     
