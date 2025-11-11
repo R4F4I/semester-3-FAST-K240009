@@ -1,3 +1,10 @@
+/* 
+
+Implement a binary search tree and perform all operations you learned above like:
+Inserting, Deleting, Searching, and Traversing.
+*/
+
+
 #include <iostream>
 
 using namespace std;
