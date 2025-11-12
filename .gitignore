@@ -20,3 +20,5 @@ COAL/COAL/COAL/*
 
 *.exe
 *.out
+
+.*/
