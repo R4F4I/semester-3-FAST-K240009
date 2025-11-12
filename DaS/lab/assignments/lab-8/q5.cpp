@@ -25,7 +25,6 @@ Tree or not.
 
 using namespace std;
 
-// Removed MIN_LIMIT and MAX_LIMIT
 
 struct Node
 {
