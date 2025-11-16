@@ -10,10 +10,6 @@ newline     BYTE 0Dh, 0Ah, 0
 
 .code
 
-;--------------------------------------------------------------------
-; Fact - Recursive factorial procedure
-; Receives: n (DWORD) pushed onto stack
-; Returns: EAX = n!
 ; Requires: n >= 0, n <= 12 (to prevent overflow in DWORD)
 ; Method: EBP Stack Frame (Method A)
 ;--------------------------------------------------------------------
