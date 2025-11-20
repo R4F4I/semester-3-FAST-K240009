@@ -48,7 +48,6 @@ public:
      */
     ~Queue() {
         delete[] arr;
-        // cout << "\n(Queue memory cleared.)" << endl; // Removed barebones
     }
 
     /**
