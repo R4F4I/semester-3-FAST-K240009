@@ -1,110 +1,139 @@
-/* 
-Task # 1
-Suppose you are working on a program that needs to store a large number of strings, with the possibility of
-duplicate strings. You decide to use chain hashing to efficiently store and retrieve the strings, but you want
-to ensure that collisions are avoided as much as possible. Your hash function simply takes the sum of the
-ASCII values of the characters in the string and returns the remainder after dividing by the number of
-buckets. You decide to implement the hash table using a linked list for each bucket.
-Input and output:
-HashTable myhash;
-[hine: key is A]
-myhash.insert("A","aaaaa");
-myhash.insert("B","bbbbb");
-myhash.insert("C","ccccc");
-myhash.insert("A","zzzzz");
+#include <iostream>
 
- */
+using namespace std;
 
- #include <iostream>
+// --- Node Structure for Linked List (Chain) ---
 
- using namespace std;
-
- class node
- {
- public:
-    string key, name;
-    node* next;
-    node(string k="", string n=""): key(k), name(n), next(nullptr) {}
-
-    
- };
-
-class hashTable
-{
+class node {
 public:
+    string key;
+    string name; // Used as the value associated with the key
+    node* next;
 
-    node **table;
-    int size;
+    // Constructor to initialize a new node
+    node(string k = "", string n = "") : key(k), name(n), next(nullptr) {}
+};
 
-    hashTable(int size = 10){
-        this->size = size;
-        table = new node*[this->size]; // table is an array of nodes with each node being defaulted as head (it will not contain any value)
-        // for (size_t i = 0; i < size; i++)
-        // {
-        //     table[i]->next = nullptr;
-        // }
-        
+// --- Hash Table Class ---
+
+class hashTable {
+private:
+    // Array of node pointers (heads of the linked lists/chains)
+    node **table; 
+    int current_size; // Stores the number of buckets/slots
+
+    /**
+     * Calculates the hash index for a given key string.
+     * Hash Function: (SUM of ASCII values) MOD current_size
+     * @param key The string key to hash.
+     * @return The hash index (0 to current_size - 1).
+     */
+    int getHashIndex(const string& key) {
+        int sum_ascii = 0;
+        for (char k : key) {
+            sum_ascii += static_cast<int>(k);
+        }
+        // Apply the modulo operation to fit it within the table size
+        return sum_ascii % this->current_size;
     }
 
-    void resize(int newSize){
-
-        node **newTable = new node*[newSize];
-        // for (size_t i = 0; i < newSize; i++)
-        // {
-        //     newTable[i]->next = nullptr;
-        // }
-        for (size_t i = 0; i < this->size; i++) // using the old unupdated size
-        {
-            newTable[i] = this->table[i];
+public:
+    // Constructor: Initializes the hash table array
+    hashTable(int size = 10) {
+        this->current_size = size;
+        // Allocate memory for the array of head pointers
+        table = new node*[this->current_size];
+        
+        // IMPORTANT FIX: Initialize all head pointers to nullptr
+        for (int i = 0; i < this->current_size; i++) {
+            table[i] = nullptr;
         }
-        this->size = newSize; // update the size of the array
-        delete[] table; // remove the old array from mem
-        this->table = newTable; // get the attib to update
-        delete[] newTable; // remove the temp arr pointer
+        cout << "Initialized Hash Table with " << this->current_size << " buckets." << endl;
     }
 
-    void insert(string key, string name){
-        // get sum of all ascii of string key
-        int sum = 0;
-        for (auto k: key)
-        {
-            sum+= static_cast<int>(k);
+    // Destructor: Clean up all dynamically allocated memory
+    ~hashTable() {
+        for (int i = 0; i < this->current_size; i++) {
+            node* current = table[i];
+            while (current != nullptr) {
+                node* to_delete = current;
+                current = current->next;
+                delete to_delete;
+            }
         }
-        int index = sum;
-        cout<<"success!1"<<endl;
-
-        if (index>this->size){
-            // create a new hastable of size index
-            resize(index+10);
-        }
-        cout<<"success!2"<<endl;
-        
-        // TODO: HOW WILL WILL THE ARR OF POINTERS RESOLVE ADDING A NEW NODE?
-        // what if the new node is manually defined
-        node *newNode = new node(key,name);
-
-        cout<<"success!3"<<endl;
-        cout<<"this->table[index]->next: "<<this->table[index]->next<<endl;
-        node* temp = this->table[index]->next;
-        cout<<"success!4"<<endl;
-
-        this->table[index]->next = newNode;
-        cout<<"success!5"<<endl;
-        newNode->next = temp; // new node added in front, keeps the insertion O(1) 
-        
-        cout<<"success!6"<<endl;
+        delete[] table; // Delete the array of pointers
+        cout << "Hash Table memory cleaned up." << endl;
     }
- 
+
+    // Insert function
+    void insert(string key, string name) {
+        int index = getHashIndex(key);
+        
+        // The problem description implies simple insertion without checking for duplicates 
+        // in the specific chain to show the chaining process. 
+        
+        // 1. Create the new node
+        node *newNode = new node(key, name);
+
+        // 2. Insert at the head of the list at the calculated index (Chain Hashing)
+        // Set the new node's next pointer to point to the current head (which could be nullptr)
+        newNode->next = this->table[index];
+        
+        // 3. Update the table slot to point to the new node (making it the new head)
+        this->table[index] = newNode;
+        
+        cout << "[Hash: " << index << "] Inserted key \"" << key << "\" with value \"" << name << "\"" << endl;
+    }
+
+    // Optional: A display function to show the structure
+    void display() {
+        cout << "\n--- Current Hash Table State ---\n";
+        for (int i = 0; i < this->current_size; i++) {
+            node* current = this->table[i];
+            if (current != nullptr) {
+                cout << "Index " << i << ": ";
+                while (current != nullptr) {
+                    cout << "(" << current->key << ", " << current->name << ")";
+                    if (current->next != nullptr) {
+                        cout << " -> ";
+                    }
+                    current = current->next;
+                }
+                cout << endl;
+            }
+        }
+        cout << "--------------------------------\n";
+    }
+    
+    // The resize function was complex and not essential for the core logic of chain hashing, 
+    // especially without a load factor check. It is omitted for a barebones implementation.
 };
 
 
-int main(int argc, char const *argv[])
-{
-    hashTable table;
-    table.insert("A","aaaaa");
-    table.insert("B","bbbbb");
-    table.insert("C","ccccc");
-    table.insert("A","zzzzz");
+// --- Main Execution ---
+
+int main() {
+    // 1. Calculate ASCII sums for keys:
+    // "A": 65. Index: 65 % 10 = 5
+    // "B": 66. Index: 66 % 10 = 6
+    // "C": 67. Index: 67 % 10 = 7
+    // "AA": 65 + 65 = 130. Index: 130 % 10 = 0 (Example for collision)
+
+    hashTable myhash(10); // Initialize with 10 buckets
+
+    cout << "\n--- Inserting Records ---\n";
+    myhash.insert("A", "aaaaa"); 
+    myhash.insert("B", "bbbbb");
+    myhash.insert("C", "ccccc");
+    
+    // (Index 5 - Collision/Duplicate)
+    myhash.insert("A", "zzzzz"); // This will be chained at index 5
+    
+    //
+    myhash.insert("K", "kkkkk"); // "K": 75. Index: 75 % 10 = 5
+    
+    cout << "\n--- Demonstrating Chaining ---\n";
+    myhash.display(); 
     
     return 0;
 }
