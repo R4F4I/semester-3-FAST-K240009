@@ -7,16 +7,10 @@ INCLUDE Irvine32.inc   ; Include the Irvine32 library for I/O functions
     
 .code
 
-; ------------------------------------------------------------------------
-; ThreeProd PROC
-; Calculates the product of three 32-bit integer parameters.
-; Displays the result using Irvine32's WriteDec.
-;
 ; Parameters (passed on stack using C calling convention):
 ; [EBP+16] -> First parameter (num1)
 ; [EBP+12] -> Second parameter (num2)
 ; [EBP+8]  -> Third parameter (num3)
-; ------------------------------------------------------------------------
 ThreeProd PROC
     ; Standard procedure prologue: save base pointer and set up new frame
     push ebp
@@ -26,8 +20,7 @@ ThreeProd PROC
     mov edx, OFFSET resultMsg
     call WriteString
     
-    ; --- Calculation: (num1 * num2) * num3 ---
-    
+    ; Calculation: (num1 * num2) * num3     
     ; 1. Load the first parameter (num1) into EAX
     mov eax, [ebp+16]       ; EAX = num1
 
@@ -37,8 +30,7 @@ ThreeProd PROC
     ; 3. Multiply the current result (in EAX) by num3
     imul [ebp+8]            ; EAX = (num1 * num2) * num3. Final 32-bit product is in EAX.
 
-    ; --- Output the Result ---
-    
+    ; Output the Result     
     ; EAX already holds the final product to display
     call WriteDec           ; Display the 32-bit signed integer in EAX
     call Crlf               ; Newline

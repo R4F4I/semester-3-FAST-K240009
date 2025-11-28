@@ -7,37 +7,26 @@ INCLUDE Irvine32.inc   ; Include the Irvine32 library
 
 .code
 
-; ------------------------------------------------------------------------
-; GCD PROC
-; Calculates the GCD of two 32-bit integer parameters (A and B) using
-; the Euclidean Algorithm (A = B, B = A % B, repeat until B is zero).
-;
-; Parameters (passed on stack for C/stdcall convention):
-; [EBP+12] -> First parameter (A)
-; [EBP+8]  -> Second parameter (B)
-; ------------------------------------------------------------------------
 GCD PROC
-    ; Standard procedure prologue: save base pointer and set up new frame
+    ; Standard procedure prologue
     push ebp
     mov ebp, esp
     
-    ; Save caller-saved registers (EBX and ECX are often modified in loops)
     push ebx
     push ecx
     push edx
 
-    ; Setup A in EAX and B in EBX
-    ; Euclidean Algorithm: A = [ebp+12], B = [ebp+8]
+    
     mov eax, [ebp+12]       ; EAX = A (Dividend)
     mov ebx, [ebp+8]        ; EBX = B (Divisor)
     
-    ; Loop starts here. We loop while B (EBX) is NOT zero.
+    
 GCD_LOOP:
     ; Check if B is zero (GCD is the last non-zero remainder, which is currently A)
     cmp ebx, 0
     je  GCD_DONE            ; If EBX (B) == 0, jump to GCD_DONE
     
-    ; --- Perform the step: A = B, B = A % B ---
+    ; Perform the step: A = B, B = A % B
 
     ; Save the current value of A (EAX) to ECX (our temporary storage)
     mov ecx, eax            ; ECX = old A
