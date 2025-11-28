@@ -32,8 +32,8 @@ ThreeProd PROC
 
     ; Output the Result     
     ; EAX already holds the final product to display
-    call WriteDec           ; Display the 32-bit signed integer in EAX
-    call Crlf               ; Newline
+    call WriteDec
+    call Crlf
     
     ; Standard procedure epilogue: restore base pointer and return
     pop ebp
