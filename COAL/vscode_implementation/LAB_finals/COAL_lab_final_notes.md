@@ -52,9 +52,35 @@ cssclasses:
     - `eax` stores some address in memory
     - `[eax]` returns the value from that address
 - use of `esi`
+- what is stack frame
+  - a temporary stack made for one procedure call
+  - the stack contains
 
+```
+| Higher Memory (Old stack data) |
+---------------------------------
+| [EBP + 12]  Parameter 2        |
+| [EBP + 8]   Parameter 1        |
+| [EBP + 4]   Return Address     |  <-- where RET will jump back
+| [EBP + 0]   Old EBP (saved)    |  <-- we store caller's EBP here
+---------------------------------
+| Local variables (if any)       |  <-- we may allocate space here
+---------------------------------
+| Lower Memory (grows downward)  |
+```
 
-# lab 4 - Working with operators
+- here:
+```
+push ebp      ; Save caller’s EBP (old base pointer)
+mov ebp, esp  ; Make EBP point to this spot → start of this function's frame
+
+```
+- ebp gets saved to global stack, 
+
+- what is `ret`?
+- it pops val from stack into `EIP`
+- which causes `EIP` to jmp to the procedure
+# LAB 4 - Working with operators
 
 ## Operand Types
 - *reg8* 8-bit general-purpose register: AH, AL, BH, BL, CH, CL, DH, DL
@@ -130,7 +156,7 @@ MOV 5, var ❌
 - **Step 3:** Add terms (`ADD eax, ebx` -> `MOV Rval, eax`)
 
 
-# lab 5 - Data related Operator and Directives Addressing
+# LAB 5 - Data related Operator and Directives Addressing
 
 ## Arithmetic Effects on Flag Registers
 
@@ -257,7 +283,7 @@ mov ax, arrayW[esi * TYPE arrayW]
 ```
 
 
-# lab 6 - intro to loops and Irvine instructions
+# LAB 6 - intro to loops and Irvine instructions
 
 ## CMP (Compare) Instruction
 * **Purpose:** Compares two operands by performing internal subtraction (*Destination – Source*).
@@ -679,7 +705,7 @@ NEXT:
 ```
 
 
-# Lab 08: Stack Operations and Procedures
+# LAB 8: Stack Operations and Procedures
 
 ## Runtime Stack Overview
 * **Structure:** LIFO (Last-In, First-Out) data structure.
@@ -794,7 +820,7 @@ END main
 ```
 
 
-# Lab 09: Integer Arithmetic (Shift, Rotate, Mul, Div)
+# LAB 9: Integer Arithmetic (Shift, Rotate, Mul, Div)
 
 ## Shift Instructions
 
@@ -971,7 +997,7 @@ END main
 ```
 
 
-# Lab 10: Advanced Procedures & Stack Frames
+# LAB 10: Advanced Procedures & Stack Frames
 
 
 
@@ -996,13 +1022,13 @@ push OFFSET arr ; Push address
 call ArrayFill
 ```
 - **Explicit Parameters:** Using `EQU` to name stack offsets for readability.
+
 ```assembly
 x_param EQU [ebp + 8]
 mov eax, x_param
 ```
 
 ## Manual Stack Frame Construction
-
 - **Setup (Prologue):** Save old base pointer, set new base pointer.
 ```assembly
 push ebp
@@ -1087,7 +1113,7 @@ MySub PROTO :DWORD, :DWORD
     CalcSum ENDP
     ```
 
-# Lab 11: String Handling & 2D Arrays
+# LAB 11: String Handling & 2D Arrays
 
 
 ## String Primitive Instructions
