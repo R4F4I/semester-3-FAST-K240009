@@ -258,6 +258,7 @@ void insertAVL(int val, node *root){
 
 
 
+
 int main(){
 
     // BST bt(10);
