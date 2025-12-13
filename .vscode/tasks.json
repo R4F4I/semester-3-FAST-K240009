@@ -4,7 +4,6 @@
     {
       "label": "Build and Run C++",
       "type": "shell",
-      // The command itself is correct, but how we call the shell needs to be fixed.
       "command": "g++ '${file}' -o '${fileDirname}\\${fileBasenameNoExtension}.exe'; if ($?) { $output = & '${fileDirname}\\${fileBasenameNoExtension}.exe' 2>&1 | Out-String; Write-Host $output.TrimEnd() -ForegroundColor Green }",
       "group": {
         "kind": "build",
@@ -12,12 +11,11 @@
       },
       "options": {
         "cwd": "${fileDirname}",
-        // This is the crucial fix. We explicitly tell pwsh.exe to expect a command.
         "shell": {
           "executable": "pwsh.exe",
           "args": [
-            "-NoProfile", // Speeds up the task by not loading a user profile
-            "-Command"    // Tells PowerShell the next thing is a command to run
+            "-NoProfile",
+            "-Command"
           ]
         }
       },
@@ -31,6 +29,26 @@
         "focus": false,
         "panel": "shared"
       }
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: g++.exe build active file",
+      "command": "C:/msys64/ucrt64/bin/g++.exe",
+      "args": [
+        "-fdiagnostics-color=always",
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}\\${fileBasenameNoExtension}.exe"
+      ],
+      "options": {
+        "cwd": "C:/msys64/ucrt64/bin"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": "build",
+      "detail": "compiler: C:/msys64/ucrt64/bin/g++.exe"
     }
   ]
 }

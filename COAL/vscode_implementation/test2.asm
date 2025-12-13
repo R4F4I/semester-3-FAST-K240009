@@ -1,16 +1,19 @@
 INCLUDE Irvine32.inc
 
 .data
-
-msg_welcome BYTE "welcome to COAL", 0 ; length is 16 (including the null terminator) 16d=10h
-array_word word 5 dup (?),1,2,3  ; a word is 2 bytes
+  val1 WORD 50
 
 .code
+
 main PROC
+  mov   eax, -100         ; Load first value
+  cwd
+  idiv  val1              ; EAX * val1
+  ; Result: EDX = 0xFFFFFFFF, EAX = 0xFFE17B80
+  ; This is the 64-bit representation of -2,000,000.
 
-mov eax, SIZEOF array_word
-mov ecx, lengthof msg_welcome
-
+call writeint
+  
 call dumpregs
 
 

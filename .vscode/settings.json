@@ -65,13 +65,17 @@
         "fstream": "cpp"
     },
     "cSpell.words": [
+        "dumpregs",
         "ENDP",
+        "imul",
         "movsx",
         "movzx",
         "Regs",
         "SBYTE",
         "SDWORD",
         "writedec",
+        "writeint",
         "xchg"
-    ]
+    ],
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/g++.exe"
 }
