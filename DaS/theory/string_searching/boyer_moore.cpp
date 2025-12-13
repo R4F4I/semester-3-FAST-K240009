@@ -21,14 +21,12 @@ text:bananas
 pattern:nana
   starts searching from the 'end' of the pattern
 
-  bananas  //no match
+  bananas  //no match, no b in pattern the pattern will be skip the b
   a
 
-  bananas //match on a, fail on n=b. Shift forward to next a
-  na
+  bananas //no match, will be shifted
+   nana
 
-  bananas  //match on ana, but still n != b. No further ana in pattern, so it checks for a smaller matching suffix - there is another na in the pattern, so shift forward to that
-  nana
 
   bananas  //shifted forward pattern is now full match
     nana
@@ -62,7 +60,22 @@ public:
     }
 
     void enqueue(char n){
+        node *temp = head;
+        node *newNode = new node(n);
+        while (temp!=nullptr)
+        {
+            temp=temp->next;
+        }
+        temp->next = newNode;
+
+    }
+    char dequeue(){
+        node *temp = head;
         
+        head = head->next;
+        char r = temp->data;
+        delete temp;
+        return r;
 
     }
 
@@ -89,12 +102,12 @@ int find_string(string targ, string src){
 
     // can be solved using sliding window
     // create of window of size targLen
-    queue q(targLen);
+    queueLL q(targLen);
 
     // now the src will slide through this window
     // a pattern in src can be mismatched with targ, for this we will find the occurrence of mismatched src char, 
     // we will then 'skip' to that char
-
+ 
 
 }
 
