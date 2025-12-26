@@ -40,7 +40,7 @@ void combSort(int arr[], int size){
     // the gap is shortened after every run by 1.3
 
     int gap = size;
-    while (gap != 1)
+    while (gap > 1)
     {
         for (size_t i = 0; i < size-gap; i++)
         {

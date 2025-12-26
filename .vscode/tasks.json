@@ -10,15 +10,21 @@
         "isDefault": true
       },
       "options": {
-        "cwd": "${fileDirname}",
-        "shell": {
-          "executable": "pwsh.exe",
-          "args": [
-            "-NoProfile",
-            "-Command"
-          ]
-        }
+      "cwd": "${fileDirname}",
+      "shell": {
+          "executable": "pwsh.exe", // Default for macOS/Linux and modern Windows
+          "args": ["-NoProfile", "-Command"]
+          }
       },
+      "windows": {
+          "options": {
+              "shell": {
+                  "executable": "powershell.exe", // Fallback for standard Windows environment
+                  "args": ["-NoProfile", "-Command"]
+              }
+          }
+      },
+
       "problemMatcher": [
         "$gcc"
       ],

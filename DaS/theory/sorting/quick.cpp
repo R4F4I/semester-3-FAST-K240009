@@ -41,7 +41,7 @@ bool isSorted(int arr[], int size){
 
 void quickSort(int arr[],int size, int low, int high){
 
-    if (isSorted(arr,size))
+    if (low>=high)
     {
         return;
     }
@@ -50,8 +50,8 @@ void quickSort(int arr[],int size, int low, int high){
     // pick the last element as pivot
     // pick j as 0 i as -1
     // if arr[j] > pivot, move j ahead
-    // if arr[j] < pivot, move i ahead, swap i and j, 
-    // until both reach end
+    // if arr[j] < pivot, move i ahead, swap i and j, then move j ahead
+    // until j reaches end
 
     int pivot = high, j = low, i = low-1;
 
@@ -60,7 +60,7 @@ void quickSort(int arr[],int size, int low, int high){
         if (arr[j]>arr[pivot])
         {
         
-            std::cout << "moving on..."<<endl;
+            // std::cout << "moving on...("<<arr[j]<<" "<<arr[pivot]<<")"<<endl;
         }
         else if (arr[j]< arr[pivot])
         {
@@ -92,8 +92,9 @@ void quickSort(int arr[],int size, int low, int high){
 int main(){
 
 
-    int arr[10] = {5,8,2,45,1,78,7,20,9,44};
-    int size = 10;
+    int arr[] = {5,8,2,45,1,78,7,20,9,44,34,43,55,68,97,65,76,75,67,63,27,6,57,97,98,68,54,6};
+    int size = sizeof(arr)/sizeof(arr[0]);
+    std::cout << size << std::endl;
 
     // quickSort(arr,0,size-1);
     quickSort(arr,size-1,0,size-1);
